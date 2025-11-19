@@ -1,78 +1,20 @@
 import Link from "next/link"
 import { Heart } from "lucide-react"
+import { nfts } from "@/lib/nft"
+import {ConnectButton} from '@rainbow-me/rainbowkit'
 
-const nfts = [
-  {
-    id: 1,
-    title: "Battle for Digital",
-    image: "/abstract-digital-art-with-flowers.jpg",
-    creator: "Waiano Akarana",
-    creatorImage: "/diverse-profile-avatars.png",
-    auction: 2.6,
-    buyNow: 14.5,
-    likes: 19,
-  },
-  {
-    id: 2,
-    title: "A Rare Path",
-    image: "/purple-pink-abstract-cube-design.jpg",
-    creator: "Waiano Akarana",
-    creatorImage: "/diverse-profile-avatars.png",
-    auction: 2.9,
-    buyNow: 18.5,
-    likes: 20,
-  },
-  {
-    id: 3,
-    title: "Software Secret Algorithms",
-    image: "/abstract-white-cloud-formation.jpg",
-    creator: "Waiano Akarana",
-    creatorImage: "/diverse-profile-avatars.png",
-    auction: 1.45,
-    buyNow: 19.99,
-    likes: 12,
-  },
-  {
-    id: 4,
-    title: "Blazeon Killer",
-    image: "/gradient-sphere-abstract-art.jpg",
-    creator: "Waiano Akarana",
-    creatorImage: "/diverse-profile-avatars.png",
-    auction: 2.75,
-    buyNow: 29.0,
-    likes: 15,
-  },
-  {
-    id: 5,
-    title: "Wait Before Buying",
-    image: "/cloudy-abstract-landscape.jpg",
-    creator: "Waiano Akarana",
-    creatorImage: "/diverse-profile-avatars.png",
-    auction: 3.2,
-    buyNow: 15.0,
-    likes: 8,
-  },
-  {
-    id: 6,
-    title: "Repeal of Online Privacy",
-    image: "/layered-abstract-shapes-sunset.jpg",
-    creator: "Waiano Akarana",
-    creatorImage: "/diverse-profile-avatars.png",
-    auction: 1.9,
-    buyNow: 14.5,
-    likes: 11,
-  },
-]
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+      <header className="max-w-7xl mx-auto px-4 py-6 flex flex-wrap justify-between border-b border-border">
+        <div className="">
           <h1 className="text-3xl font-bold text-foreground">NFT Marketplace</h1>
           <p className="text-muted-foreground mt-2">Discover unique digital collectibles</p>
         </div>
+
+        <ConnectButton />
       </header>
 
       {/* Main Content */}
@@ -120,7 +62,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">Buy now</p>
-                      <p className="font-bold text-foreground">${nft.buyNow.toFixed(2)}</p>
+                      <p className="font-bold text-foreground">{nft.buyNowPrice.toFixed(2)} ETH</p>
                     </div>
                   </div>
                 </div>
