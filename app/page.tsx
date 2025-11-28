@@ -62,7 +62,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">Buy now</p>
-                      <p className="font-bold text-foreground">{nft.buyNowPrice.toFixed(2)} ETH</p>
+                      <p className="font-bold text-foreground">{nft.buyNowPrice} ETH</p>
                     </div>
                   </div>
                 </div>

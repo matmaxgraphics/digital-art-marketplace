@@ -13,6 +13,7 @@ import {
   useConnect,
   useDisconnect,
   useSendTransaction,
+  useWaitForTransactionReceipt,
 } from "wagmi";
 import { parseEther } from "viem";
 
@@ -34,6 +35,7 @@ export default function Checkout() {
 
   const { address, isConnected } = useAccount();
   const { sendTransaction } = useSendTransaction();
+  const [txHash, setTxHash] = useState<`0x${string}` | undefined>();
 
   const handlePurchase = async () => {
     if (!isConnected) {
@@ -43,16 +45,31 @@ export default function Checkout() {
 
     try {
       const ethAmount = nft.buyNowPrice.toString();
-      await sendTransaction({
-        to: "0x5dff50b87F61FFb0dB39A1C6ADd9e607AC47c77F",
-        value: parseEther(ethAmount),
-      });
-      alert("Transaction sent! Check your wallet to confirm.");
+      sendTransaction(
+        {
+          to: "0x5dff50b87F61FFb0dB39A1C6ADd9e607AC47c77F",
+          value: parseEther(ethAmount),
+        },
+        {
+          onSuccess: (tx) => {
+            setTxHash(tx);
+            alert("Transaction sent! Check your wallet to confirm.");
+          },
+        }
+      );
     } catch (err) {
       console.error(err);
       alert("Transaction failed");
     }
   };
+
+  const {
+    data: receipt,
+    isLoading: isConfirming,
+    isSuccess,
+  } = useWaitForTransactionReceipt({
+    hash: txHash || undefined,
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -207,13 +224,35 @@ export default function Checkout() {
             </button>
 
             {/* Complete Purchase Button */}
-            <Button
-              size="lg"
-              className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-              onClick={handlePurchase}
-            >
-              Complete Purchase
-            </Button>
+
+            {!txHash && (
+              <Button
+                size="lg"
+                className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                onClick={handlePurchase}
+              >
+                Complete Purchase
+              </Button>
+            )}
+
+            {txHash && isConfirming && (
+              <div className="mt-8 text-center text-blue-500 animate-pulse">
+                ⏳ Waiting for on-chain confirmation...
+              </div>
+            )}
+
+            {isSuccess && (
+              <div className="mt-8 p-4 bg-green-600/10 text-green-600 rounded-lg">
+                🎉 Transaction Successful!
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                  target="_blank"
+                  className="block underline mt-2"
+                >
+                  View on Etherscan
+                </a>
+              </div>
+            )}
 
             {/* Terms */}
             <p className="text-xs text-muted-foreground text-center mt-4">
